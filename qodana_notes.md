@@ -170,14 +170,50 @@ The automatic setup step explains that Qodana will add a `QODANA_TOKEN` GitHub r
 
 The final step says that analysis results will be displayed in Qodana Cloud after the first Qodana job run.
 
+
 This flow is important because it connects Qodana Cloud to a real repository and CI pipeline. It also includes permission-sensitive actions, such as adding a GitHub secret and creating a pull request.
+
+## GitHub Actions automatic setup result
+
+After selecting Python as the programming language and using the automatic setup mode, Qodana created a pull request in the selected GitHub repository.
+
+Pull request title:
+
+- Add qodana CI checks
+
+The pull request was created by `qodana-cloud[bot]` from a generated branch named `qodana-automation-...`.
+
+The pull request contains two commits:
+
+- Add `qodana.yaml` file
+- Add GitHub workflow file
+
+The bot comment says that the pull request adds `qodana.yaml` and a GitHub workflow file that runs Qodana static analysis on each pull request.
+
+GitHub Actions checks were triggered automatically.
+
+Results shown in the pull request:
+
+- Qodana for Python found 1 new problem.
+- Inspection: Unused local symbols.
+- Severity: Notice.
+- Problems: 1.
+- There is a link to view the detailed Qodana report.
+- Merge info says all checks have passed.
+- One Qodana check is neutral because it found 1 new problem.
+- The Qodana workflow check itself completed successfully.
+- The pull request has no conflicts and can be merged automatically.
+
+This is important because the setup flow does not only show instructions, but actually changes the repository by creating a pull request with configuration files and adding CI checks.
+
+Possible observation: the pull request clearly shows what files Qodana wants to add before merging, which is good for transparency. It is also important to test that the user understands the difference between a successful workflow run and a Qodana result that found new problems.
 
 ## Possible important flows noticed so far
 
 1. New user onboarding and organization setup.
 2. Explore demo project report.
 3. Run Qodana locally using CLI or JetBrains IDE.
-4. Set up Qodana in a CI/CD pipeline with GitHub Actions.
+4. Set up Qodana in a CI/CD pipeline with GitHub Actions and review the generated pull request.
 
 ## Possible observations / risks
 
@@ -188,6 +224,8 @@ This flow is important because it connects Qodana Cloud to a real repository and
 - The demo report contains a lot of information, so filters and grouping are important for usability.
 - Local setup depends on the user correctly copying and using the Qodana token.
 - GitHub Actions setup includes sensitive repository changes: adding a repository secret and creating a pull request with configuration files.
+- The generated pull request should make it clear which files are added and why.
+- Users may need to understand that a GitHub Actions workflow can succeed even when Qodana reports new problems.
 - The GitHub Actions setup flow should clearly explain what access Qodana needs and what files/secrets it will create.
 - The language selection step currently supports only one language per project, which may be important for repositories with multiple languages.
 - The product should clearly explain when results will appear after a scan, because analysis can take several minutes.
